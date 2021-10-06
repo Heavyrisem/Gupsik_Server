@@ -23,6 +23,6 @@ app.post('/Today', async (req, res) => {
 })
 
 
-app.listen(80, () => {
+app.listen(9997, () => {
     console.log("급식 서버 is on");
 });
