@@ -1,3 +1,5 @@
+import axios, { AxiosResponse } from "axios";
+
 interface APIResponse {
     mealServiceDietInfo: Array<{
         head: Array<{
@@ -21,4 +23,15 @@ interface APIResponse {
             MLSV_TO_YMD: number // date YYYYMMDD
           }>
     }>
+}
+
+export default {
+    GetLunch: (time: string): Promise<string> => {
+        return new Promise(async (resolve, reject) => {
+            let result: AxiosResponse<APIResponse> = await axios.post(`https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=J10&SD_SCHUL_CODE=7531328&MLSV_YMD=${time}&Type=json`);
+    
+            if (!result.data.mealServiceDietInfo.length) return reject("조회된 급식이 없습니다.");
+            else return resolve(result.data.mealServiceDietInfo[1].row[0].DDISH_NM.replace(/(\d+\.)*<br\/>/g, '. '));
+        })
+    }
 }
